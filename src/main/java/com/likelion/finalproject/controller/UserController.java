@@ -20,6 +20,6 @@ public class UserController {
 
     @PostMapping("/login")
     public Response<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest){
-        return Response.success(new UserLoginResponse());
+        return Response.success(new UserLoginResponse(""));
     }
 }
