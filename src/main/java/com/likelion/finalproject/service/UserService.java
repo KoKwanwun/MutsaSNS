@@ -31,4 +31,17 @@ public class UserService {
                 .userName(savedUser.getUserName())
                 .build();
     }
+
+    public String login(String userName, String password) {
+        // userName이 없을 경우
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+
+        // password가 올바르지 않은 경우
+        if(!encoder.matches(password, user.getPassword())) {
+            throw new UserException(ErrorCode.INVALID_PASSWORD, ErrorCode.INVALID_PASSWORD.getMessage());
+        }
+
+        return "토큰 구현 필요";
+    }
 }
