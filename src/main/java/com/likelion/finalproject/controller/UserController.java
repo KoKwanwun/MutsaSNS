@@ -23,8 +23,8 @@ public class UserController {
 
     @ApiOperation(value = "로그인")
     @PostMapping("/login")
-    public UserLoginResponse login(@RequestBody UserLoginRequest userLoginRequest){
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest){
         String token = userService.login(userLoginRequest.getUserName(), userLoginRequest.getPassword());
-        return new UserLoginResponse(token);
+        return Response.success(new UserLoginResponse(token));
     }
 }
