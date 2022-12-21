@@ -1,11 +1,11 @@
-package com.likelion.finalproject.domain.dto;
+package com.likelion.finalproject.domain.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UserJoinResponse {
-    private Long userId;
+public class UserLoginRequest {
     private String userName;
+    private String password;
 }
