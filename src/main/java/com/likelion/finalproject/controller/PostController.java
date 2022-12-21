@@ -1,16 +1,25 @@
 package com.likelion.finalproject.controller;
 
 import com.likelion.finalproject.domain.dto.Response;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.likelion.finalproject.domain.dto.post.PostRegisterRequest;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
+    @ApiOperation(value = "포스트 등록")
     @PostMapping
-    public String registerPost(){
+    public String registerPost(@RequestBody PostRegisterRequest postRegisterRequest){
+
+
         return "Post Test";
+    }
+
+    @ApiOperation(value = "포스트 상세")
+    @GetMapping(value = "/{postsId}")
+    public String printOnePost(@PathVariable Long postsId) {
+        return "";
     }
 }
