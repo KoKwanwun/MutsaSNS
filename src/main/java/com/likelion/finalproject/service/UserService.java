@@ -6,7 +6,9 @@ import com.likelion.finalproject.domain.dto.UserJoinRequest;
 import com.likelion.finalproject.exception.ErrorCode;
 import com.likelion.finalproject.exception.UserException;
 import com.likelion.finalproject.repository.UserRepository;
+import com.likelion.finalproject.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
+
+    @Value("${jwt.token.secret}")
+    private String secretKey;
+    private long expiredTimeMs = 60 * 60 * 1000;  // 1시간
 
     public UserDto join(UserJoinRequest userJoinRequest) {
         // userName 중복여부 확인
@@ -42,6 +48,6 @@ public class UserService {
             throw new UserException(ErrorCode.INVALID_PASSWORD, ErrorCode.INVALID_PASSWORD.getMessage());
         }
 
-        return "토큰 구현 필요";
+        return JwtTokenUtil.createToken(userName, secretKey, expiredTimeMs);
     }
 }
