@@ -12,6 +12,6 @@ public class HelloController {
     @ApiOperation(value = "문자 출력")
     @GetMapping()
     public String printHello(){
-        return "hello";
+        return "darkchocolate";
     }
 }
