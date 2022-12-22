@@ -20,14 +20,8 @@ public class PostService {
     public PostDto create(PostRequest request, String userName) {
         Post savedPost = postRepository.save(PostDto.toEntity(request.getTitle(), request.getBody(), userName));
 
-        return PostDto.builder()
-                .id(savedPost.getId())
-                .title(savedPost.getTitle())
-                .body(savedPost.getBody())
-                .userName(savedPost.getUserName())
-                .createdAt(savedPost.getCreatedAt())
-                .lastModifiedAt(savedPost.getLastModifiedAt())
-                .build();
+        return new PostDto(savedPost.getId(), savedPost.getTitle(), savedPost.getBody(),
+                savedPost.getUserName(), savedPost.getCreatedAt(), savedPost.getLastModifiedAt());
     }
 
     public PostDto printOnePost(Long postsId) {
@@ -35,14 +29,8 @@ public class PostService {
         Post post = postRepository.findById(postsId)
                 .orElseThrow(() -> new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
-        return PostDto.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .body(post.getBody())
-                .userName(post.getUserName())
-                .createdAt(post.getCreatedAt())
-                .lastModifiedAt(post.getLastModifiedAt())
-                .build();
+        return new PostDto(post.getId(), post.getTitle(), post.getBody(),
+                post.getUserName(), post.getCreatedAt(), post.getLastModifiedAt());
     }
 
     public Page<PostDto> printPosts(Pageable pageable) {
