@@ -3,14 +3,13 @@ package com.likelion.finalproject.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
@@ -19,12 +18,21 @@ import java.sql.Timestamp;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 
-    @CreatedDate
     @Column(updatable = false)
-    private Timestamp createdAt;
+    private String createdAt;
 
-    @LastModifiedDate
-    private Timestamp lastModifiedAt;
+    private String lastModifiedAt;
 
     private Timestamp deletedAt;
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createdAt = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+        this.lastModifiedAt = this.createdAt;
+    }
+
+    @PreUpdate
+    public void onPreUpdate(){
+        this.lastModifiedAt = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+    }
 }
