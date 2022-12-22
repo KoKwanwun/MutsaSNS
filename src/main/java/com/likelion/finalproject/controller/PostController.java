@@ -25,8 +25,9 @@ public class PostController {
 
     @ApiOperation(value = "포스트 상세")
     @GetMapping(value = "/{postsId}")
-    public String printOnePost(@PathVariable Long postsId) {
-        return "";
+    public Response<PostDto> printOnePost(@PathVariable Long postsId) {
+        PostDto postDto = postService.printOnePost(postsId);
+        return Response.success(postDto);
     }
 
     @ApiOperation(value = "포스트 등록")
