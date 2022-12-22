@@ -44,8 +44,9 @@ public class PostController {
 
     @ApiOperation(value = "포스트 수정")
     @PutMapping("/{id}")
-    public String updatePost(@PathVariable Long id){
-        return "Post Update";
+    public Response<PostResponse> updatePost(@RequestBody PostRequest postRequest, @PathVariable Long id, Authentication authentication){
+        PostDto postDto = postService.update(id, postRequest, authentication.getName());
+        return Response.success(new PostResponse("포스트 수정 완료", postDto.getId()));
     }
 
     @ApiOperation(value = "포스트 삭제")
