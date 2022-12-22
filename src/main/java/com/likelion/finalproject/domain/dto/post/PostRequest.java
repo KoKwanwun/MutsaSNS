@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class PostRegisterRequest {
+public class PostRequest {
     private String title;
     private String body;
 }
