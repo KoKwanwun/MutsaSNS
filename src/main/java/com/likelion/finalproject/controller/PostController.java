@@ -7,6 +7,10 @@ import com.likelion.finalproject.domain.dto.post.PostRegisterResponse;
 import com.likelion.finalproject.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +23,9 @@ public class PostController {
 
     @ApiOperation(value = "포스트 리스트")
     @GetMapping()
-    public String printPosts() {
-        return "포스트 리스트 출력";
+    public Response<Page<PostDto>> printPosts(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<PostDto> posts = postService.printPosts(pageable);
+        return Response.success(posts);
     }
 
     @ApiOperation(value = "포스트 상세")

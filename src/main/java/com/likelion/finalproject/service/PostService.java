@@ -7,6 +7,8 @@ import com.likelion.finalproject.exception.ErrorCode;
 import com.likelion.finalproject.exception.UserException;
 import com.likelion.finalproject.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,5 +43,14 @@ public class PostService {
                 .createdAt(post.getCreatedAt())
                 .lastModifiedAt(post.getLastModifiedAt())
                 .build();
+    }
+
+    public Page<PostDto> printPosts(Pageable pageable) {
+        Page<Post> posts = postRepository.findAll(pageable);
+        Page<PostDto> postDtos = posts.map(post -> new PostDto(post.getId(),
+                post.getTitle(), post.getBody(), post.getUserName(),
+                post.getCreatedAt(), post.getLastModifiedAt()));
+
+        return postDtos;
     }
 }
