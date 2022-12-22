@@ -23,7 +23,7 @@ public class PostController {
 
     @ApiOperation(value = "포스트 리스트")
     @GetMapping()
-    public Response<Page<PostDto>> printPosts(@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    public Response<Page<PostDto>> printPosts(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostDto> posts = postService.printPosts(pageable);
         return Response.success(posts);
     }
