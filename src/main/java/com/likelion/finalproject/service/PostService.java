@@ -2,7 +2,7 @@ package com.likelion.finalproject.service;
 
 import com.likelion.finalproject.domain.Post;
 import com.likelion.finalproject.domain.dto.post.PostDto;
-import com.likelion.finalproject.domain.dto.post.PostRegisterRequest;
+import com.likelion.finalproject.domain.dto.post.PostRequest;
 import com.likelion.finalproject.exception.ErrorCode;
 import com.likelion.finalproject.exception.UserException;
 import com.likelion.finalproject.repository.PostRepository;
@@ -17,7 +17,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public PostDto create(PostRegisterRequest request, String userName) {
+    public PostDto create(PostRequest request, String userName) {
         Post savedPost = postRepository.save(PostDto.toEntity(request.getTitle(), request.getBody(), userName));
 
         return PostDto.builder()

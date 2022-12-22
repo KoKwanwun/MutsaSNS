@@ -2,8 +2,8 @@ package com.likelion.finalproject.controller;
 
 import com.likelion.finalproject.domain.dto.Response;
 import com.likelion.finalproject.domain.dto.post.PostDto;
-import com.likelion.finalproject.domain.dto.post.PostRegisterRequest;
-import com.likelion.finalproject.domain.dto.post.PostRegisterResponse;
+import com.likelion.finalproject.domain.dto.post.PostRequest;
+import com.likelion.finalproject.domain.dto.post.PostResponse;
 import com.likelion.finalproject.service.PostService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +37,9 @@ public class PostController {
 
     @ApiOperation(value = "포스트 등록")
     @PostMapping()
-    public Response<PostRegisterResponse> createPost(@RequestBody PostRegisterRequest postRegisterRequest, Authentication authentication){
-        PostDto postDto = postService.create(postRegisterRequest, authentication.getName());
-        return Response.success(new PostRegisterResponse("포스트 등록 완료", postDto.getId()));
+    public Response<PostResponse> createPost(@RequestBody PostRequest postRequest, Authentication authentication){
+        PostDto postDto = postService.create(postRequest, authentication.getName());
+        return Response.success(new PostResponse("포스트 등록 완료", postDto.getId()));
     }
 
     @ApiOperation(value = "포스트 수정")
