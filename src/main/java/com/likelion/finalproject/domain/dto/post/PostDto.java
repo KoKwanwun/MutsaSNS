@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,8 +16,8 @@ public class PostDto {
     private String body;
     private String userName;
 
-    private Timestamp createdAt;
-    private Timestamp lastModifiedAt;
+    private String createdAt;
+    private String lastModifiedAt;
 
     public static Post toEntity(String title, String body, String userName){
         return Post.builder()
