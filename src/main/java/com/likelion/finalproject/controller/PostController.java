@@ -1,18 +1,26 @@
 package com.likelion.finalproject.controller;
 
 import com.likelion.finalproject.domain.dto.Response;
+import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.domain.dto.post.PostRegisterRequest;
+import com.likelion.finalproject.domain.dto.post.PostRegisterResponse;
+import com.likelion.finalproject.service.PostService;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/posts")
+@RequiredArgsConstructor
 public class PostController {
+
+    private final PostService postService;
 
     @ApiOperation(value = "포스트 리스트")
     @GetMapping()
     public String printPosts() {
-        return "";
+        return "포스트 리스트 출력";
     }
 
     @ApiOperation(value = "포스트 상세")
@@ -22,9 +30,10 @@ public class PostController {
     }
 
     @ApiOperation(value = "포스트 등록")
-    @PostMapping
-    public String registerPost(@RequestBody PostRegisterRequest postRegisterRequest){
-        return "Post Register";
+    @PostMapping()
+    public Response<PostRegisterResponse> createPost(@RequestBody PostRegisterRequest postRegisterRequest, Authentication authentication){
+        PostDto postDto = postService.create(postRegisterRequest, authentication.getName());
+        return Response.success(new PostRegisterResponse("포스트 등록 완료", postDto.getId()));
     }
 
     @ApiOperation(value = "포스트 수정")
