@@ -33,6 +33,10 @@ public class PostService {
         Post post = postRepository.findById(postsId)
                 .orElseThrow(() -> new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
+        if(post.getDeletedAt() != null) {
+            throw new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage());
+        }
+
         return PostDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
