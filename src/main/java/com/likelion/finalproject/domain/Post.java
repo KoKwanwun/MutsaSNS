@@ -14,8 +14,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder@Where(clause = "deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE user SET deleted_at = CURRENT_TIMESTAMP where id = ?")
+@Builder@Where(clause = "is_deleted = 0")
+@SQLDelete(sql = "UPDATE post SET is_deleted = true where id = ?")
 public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
