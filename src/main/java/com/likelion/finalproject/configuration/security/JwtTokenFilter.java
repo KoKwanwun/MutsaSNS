@@ -1,4 +1,4 @@
-package com.likelion.finalproject.configuration;
+package com.likelion.finalproject.configuration.security;
 
 import com.likelion.finalproject.domain.User;
 import com.likelion.finalproject.service.UserService;
