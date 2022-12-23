@@ -1,5 +1,8 @@
 package com.likelion.finalproject.configuration;
 
+import com.likelion.finalproject.configuration.security.CustomAuthenticationEntryPoint;
+import com.likelion.finalproject.configuration.security.JwtExceptionFilter;
+import com.likelion.finalproject.configuration.security.JwtTokenFilter;
 import com.likelion.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +38,11 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt사용하는 경우 씀
                 .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and()
                 .addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class) //UserNamePasswordAuthenticationFilter적용하기 전에 JWTTokenFilter를 적용 하라는 뜻 입니다.
+                .addFilterBefore(new JwtExceptionFilter(), JwtTokenFilter.class)
                 .build();
     }
 }
