@@ -1,7 +1,6 @@
 package com.likelion.finalproject.controller;
 
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +11,6 @@ public class HelloController {
     @ApiOperation(value = "문자 출력")
     @GetMapping()
     public String printHello(){
-        return "darkchocolate";
+        return "popin";
     }
 }
