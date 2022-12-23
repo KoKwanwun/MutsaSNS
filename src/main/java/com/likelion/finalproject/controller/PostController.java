@@ -51,7 +51,8 @@ public class PostController {
 
     @ApiOperation(value = "포스트 삭제")
     @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable Long id){
-        return "Post Delete";
+    public Response<PostResponse> deletePost(@PathVariable Long id, Authentication authentication){
+        PostDto postDto = postService.delete(id, authentication.getName());
+        return Response.success(new PostResponse("포스트 삭제 완료", postDto.getId()));
     }
 }
