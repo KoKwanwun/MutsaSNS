@@ -1,9 +1,11 @@
 package com.likelion.finalproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -23,7 +25,7 @@ public class BaseEntity {
 
     private String lastModifiedAt;
 
-    private Timestamp deletedAt;
+    private boolean isDeleted;
 
     @PrePersist
     public void onPrePersist(){
