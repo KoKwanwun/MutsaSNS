@@ -26,7 +26,7 @@ public class PostService {
     public PostDto create(PostRequest request, String userName) {
         // 작성자(유저)가 DB에 존재하지 않을 경우
         userRepository.findByUserName(userName)
-                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, "유저 존재하지 않음"));
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, "유저가 존재하지 않습니다."));
 
         Post savedPost = postRepository.save(PostDto.toEntity(request.getTitle(), request.getBody(), userName));
 
@@ -62,7 +62,7 @@ public class PostService {
 
         // 유저가 존재 X(정보가 DB에 없음)
         User user = userRepository.findByUserName(accessName)
-                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, "유저 존재하지 않음"));
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, "유저가 존재하지 않습니다."));
 
         // 작성자 != 유저, 하지만 유저의 ROLE이 ADMIN이면 수정이나 삭제가 가능하도록
         if(!post.getUserName().equals(accessName) && user.getRole().equals(UserRole.USER)) {
