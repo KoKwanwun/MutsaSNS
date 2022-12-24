@@ -1,5 +1,6 @@
 package com.likelion.finalproject.controller;
 
+import com.likelion.finalproject.configuration.annotation.Lock;
 import com.likelion.finalproject.domain.dto.Response;
 import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.domain.dto.post.PostRequest;
@@ -35,6 +36,7 @@ public class PostController {
         return Response.success(postDto);
     }
 
+    @Lock
     @ApiOperation(value = "포스트 등록")
     @PostMapping()
     public Response<PostResponse> createPost(@RequestBody PostRequest postRequest, Authentication authentication){
@@ -42,6 +44,7 @@ public class PostController {
         return Response.success(new PostResponse("포스트 등록 완료", postDto.getId()));
     }
 
+    @Lock
     @ApiOperation(value = "포스트 수정")
     @PutMapping("/{id}")
     public Response<PostResponse> updatePost(@RequestBody PostRequest postRequest, @PathVariable Long id, Authentication authentication){
@@ -49,6 +52,7 @@ public class PostController {
         return Response.success(new PostResponse("포스트 수정 완료", postDto.getId()));
     }
 
+    @Lock
     @ApiOperation(value = "포스트 삭제")
     @DeleteMapping("/{id}")
     public Response<PostResponse> deletePost(@PathVariable Long id, Authentication authentication){

@@ -1,5 +1,6 @@
 package com.likelion.finalproject.configuration;
 
+import com.likelion.finalproject.configuration.annotation.Lock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -30,6 +31,7 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
+                .operationSelector(oc -> oc.findAnnotation(Lock.class).isPresent()) // Lock 어노테이션이 달려있는 메소드만 자물쇠 걸리도록
                 .build();
     }
 

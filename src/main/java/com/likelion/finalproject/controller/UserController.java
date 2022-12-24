@@ -1,5 +1,6 @@
 package com.likelion.finalproject.controller;
 
+import com.likelion.finalproject.configuration.annotation.Lock;
 import com.likelion.finalproject.domain.dto.*;
 import com.likelion.finalproject.domain.dto.user.*;
 import com.likelion.finalproject.service.UserService;
@@ -29,6 +30,7 @@ public class UserController {
         return Response.success(new UserLoginResponse(token));
     }
 
+    @Lock
     @ApiOperation(value = "등급 Change - ADMIN만 가능( {”role”:”ADMIN”} or {”role”:”USER”} )")
     @PostMapping("/{id}/role/change")
     public Response<UserRoleResponse> roleChange(@RequestBody UserRoleRequest userRoleRequest, @PathVariable Long id, Authentication authentication){
