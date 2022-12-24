@@ -10,6 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @Where(clause = "is_deleted = 0")
 @SQLDelete(sql = "UPDATE user SET is_deleted = true where id = ?")

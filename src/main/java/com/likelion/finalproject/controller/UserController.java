@@ -5,6 +5,7 @@ import com.likelion.finalproject.domain.dto.user.*;
 import com.likelion.finalproject.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,5 +27,12 @@ public class UserController {
     public Response<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest){
         String token = userService.login(userLoginRequest.getUserName(), userLoginRequest.getPassword());
         return Response.success(new UserLoginResponse(token));
+    }
+
+    @ApiOperation(value = "등급 Change - ADMIN만 가능( {”role”:”ADMIN”} or {”role”:”USER”} )")
+    @PostMapping("/{id}/role/change")
+    public Response<UserRoleResponse> roleChange(@RequestBody UserRoleRequest userRoleRequest, @PathVariable Long id, Authentication authentication){
+        UserRoleResponse userRoleResponse = userService.roleChange(userRoleRequest, id, authentication.getName());
+        return Response.success(userRoleResponse);
     }
 }
