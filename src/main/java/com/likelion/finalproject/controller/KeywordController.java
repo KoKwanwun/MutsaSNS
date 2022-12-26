@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/hello")
-public class HelloController {
+public class KeywordController {
     @ApiOperation(value = "문자 출력")
     @GetMapping()
     public String printHello(){
-        return "popin";
+        return "happy_new_year";
     }
 }
