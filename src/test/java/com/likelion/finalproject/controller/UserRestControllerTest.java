@@ -63,8 +63,8 @@ class UserRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultCode").exists())
-                .andExpect(jsonPath("$.result.userId").value(0))
-                .andExpect(jsonPath("$.result.userName").value(userJoinRequest.getUserName()));
+                .andExpect(jsonPath("$.result.userId").exists())
+                .andExpect(jsonPath("$.result.userName").exists());
     }
 
     @Test
