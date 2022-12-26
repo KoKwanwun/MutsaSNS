@@ -30,7 +30,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             setResponse(ErrorCode.INVALID_TOKEN, response);
         } catch (NoSuchElementException e){
             // 토큰 정보에 있는 유저가 DB에 없을 경우
-            setResponse(ErrorCode.USERNAME_NOT_FOUND, response);
+            setResponse(ErrorCode.DATABASE_ERROR, response);
         }
         // 그 외의 경우는 CustomAuthenticationEntryPoint Class에서 처리
     }

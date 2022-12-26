@@ -60,9 +60,9 @@ public class PostService {
         log.info("accessName : " + accessName);
         log.info("same? : " + (!post.getUserName().equals(accessName)));
 
-        // 유저가 존재 X(정보가 DB에 없음)
+        // 유저(토큰 인증 받은)가 존재 X(정보가 DB에 없음)
         User user = userRepository.findByUserName(accessName)
-                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, "유저가 존재하지 않습니다."));
+                .orElseThrow(() -> new UserException(ErrorCode.DATABASE_ERROR, "DB에 유저가 존재하지 않습니다."));
 
         // 작성자 != 유저, 하지만 유저의 ROLE이 ADMIN이면 수정이나 삭제가 가능하도록
         if(!post.getUserName().equals(accessName) && user.getRole().equals(UserRole.USER)) {
