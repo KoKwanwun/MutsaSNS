@@ -21,7 +21,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping()
-    public String list(Model model, @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+    public String list(Model model, @PageableDefault(size = 100, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostDto> posts = postService.printPosts(pageable);
         model.addAttribute("posts", posts);
         return "home";
