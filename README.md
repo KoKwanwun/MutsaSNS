@@ -24,17 +24,19 @@ View는 현재 구현중입니다.
 ![image](https://user-images.githubusercontent.com/84280815/209634214-e942c8c0-52d3-4545-b5cb-af52b3a7d584.png)
 
 - CI/CD
-  - 제가 작성한 블로그를 참고했습니다. (https://velog.io/@id1232/GitLab-%EB%B9%8C%EB%93%9C-%EB%B0%8F-%EB%B0%B0%ED%8F%AC)
+  - 제가 작성한 블로그를 참고했습니다. ([CI/CD 참고자료](https://velog.io/@id1232/GitLab-%EB%B9%8C%EB%93%9C-%EB%B0%8F-%EB%B0%B0%ED%8F%AC))
   - 이후, main 브랜치 변경할 때만 CI/CD 되도록 수정했습니다
 
 - 회원가입 / 로그인 구현
   - 회원가입, 로그인 구현은 Authentication에서 어려움이 있었습니다.
   - Token 예외 처리 과정에서 어려움이 있었는데 AuthenticationEntryPoint, addFilterBefore를 추가적으로 넣어서 많은 예외처리를 할 수 있었습니다.
+참고 자료([JWT 토큰 만료에 대한 예외처리](https://velog.io/@hellonayeon/spring-boot-jwt-expire-exception), [스프링시큐리티 JWT 예외처리](https://velog.io/@dltkdgns3435/%EC%8A%A4%ED%94%84%EB%A7%81%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-JWT-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC))
 
 - 게시판 리스트, 상세, 등록, 수정, 삭제 기능 구현
   - 게시판 기능은 Auditing 기능 구현에서 어려움이 있었습니다.
   - Auditing : createdAt, lastModifiedAt을 `2022/12/27 13:40:51`의 형태로 하기 위해 많은 시간을 투자했습니다. String 형태로 바꾸고 해결했지만, deletedAt은 해결하지 못하여 isDeleted로 삭제 여부만 확인할 수 있도록 수정했습니다. 또한, Docker
 서버에 띄운 후 게시판을 등록하면, Docker의 서버 시간으로 등록이 되어, ZonedDateTime을 `Asia/Seoul`으로 하여 어디서나 서울 시간으로 되도록 설정했습니다.
+    ([JPA Auditing 형식 변경](https://kimseungjae.tistory.com/13))
 
 - UserRestController, PostRestController 테스트 코드 작성
   - Test 코드를 짜는 과정에서는 많은 어려움이 있었습니다. 이 과정에서는 강사님의 Git을 많이 활용했습니다.
