@@ -5,7 +5,9 @@ View는 현재 구현중입니다.
 ## Endpoint
 ### View (구현중)
 - 게시판 목록 `GET /posts`
+![image](https://user-images.githubusercontent.com/84280815/209626018-113485ad-5d33-4ad6-85e0-7c8772f1ab30.png)
 - 게시판 상세 `GET /posts/{id}`
+![image](https://user-images.githubusercontent.com/84280815/209626279-a493a468-aa59-481b-82c2-def43d1c9a72.png)
 
 ### API
 - 회원가입 `POST /api/v1/users/join`
