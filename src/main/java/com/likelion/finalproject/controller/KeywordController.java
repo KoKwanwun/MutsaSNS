@@ -11,6 +11,6 @@ public class KeywordController {
     @ApiOperation(value = "문자 출력")
     @GetMapping()
     public String printHello(){
-        return "happy_new_year";
+        return "고관운";
     }
 }
