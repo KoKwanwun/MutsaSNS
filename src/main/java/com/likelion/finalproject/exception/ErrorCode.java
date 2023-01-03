@@ -16,7 +16,8 @@ public enum ErrorCode {
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "DB에러"),
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 ROLE은 없습니다."),
     ALREADY_ROLE_USER(HttpStatus.CONFLICT, "이미 role이 user입니다."),
-    ALREADY_ROLE_ADMIN(HttpStatus.CONFLICT, "이미 role이 admin입니다.")
+    ALREADY_ROLE_ADMIN(HttpStatus.CONFLICT, "이미 role이 admin입니다."),
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글이 없습니다.")
     ;
 
     private HttpStatus status;

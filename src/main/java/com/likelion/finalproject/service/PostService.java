@@ -1,12 +1,13 @@
 package com.likelion.finalproject.service;
 
+import com.likelion.finalproject.domain.Comment;
 import com.likelion.finalproject.domain.Post;
 import com.likelion.finalproject.domain.User;
-import com.likelion.finalproject.domain.UserRole;
+import com.likelion.finalproject.domain.dto.comment.CommentDto;
+import com.likelion.finalproject.domain.dto.comment.CommentRequest;
 import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.domain.dto.post.PostRequest;
-import com.likelion.finalproject.exception.ErrorCode;
-import com.likelion.finalproject.exception.UserException;
+import com.likelion.finalproject.repository.CommentRepository;
 import com.likelion.finalproject.repository.PostRepository;
 import com.likelion.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PostService {
 
+    private final CheckException checkException;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public PostDto create(PostRequest request, String userName) {
         // 작성자(유저)가 DB에 존재하지 않을 경우
-        userRepository.findByUserName(userName)
-                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, "유저가 존재하지 않습니다."));
+        checkException.checkUser(userName);
 
         Post savedPost = postRepository.save(PostDto.toEntity(request.getTitle(), request.getBody(), userName));
 
@@ -34,10 +36,9 @@ public class PostService {
                 savedPost.getUserName(), savedPost.getCreatedAt(), savedPost.getLastModifiedAt());
     }
 
-    public PostDto printOnePost(Long postsId) {
+    public PostDto printOnePost(Long postId) {
         // 해당 id의 post가 없을 경우
-        Post post = postRepository.findById(postsId)
-                .orElseThrow(() -> new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+        Post post = checkException.checkPost(postId);
 
         return new PostDto(post.getId(), post.getTitle(), post.getBody(),
                 post.getUserName(), post.getCreatedAt(), post.getLastModifiedAt());
@@ -52,28 +53,10 @@ public class PostService {
         return postDtos;
     }
 
-    private Post checkException(Long id, String accessName) {
-        // 포스트 존재 X
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
-        log.info("post.getUserName : " + post.getUserName());
-        log.info("accessName : " + accessName);
-        log.info("same? : " + (!post.getUserName().equals(accessName)));
 
-        // 유저(토큰 인증 받은)가 존재 X(정보가 DB에 없음)
-        User user = userRepository.findByUserName(accessName)
-                .orElseThrow(() -> new UserException(ErrorCode.DATABASE_ERROR, "DB에 유저가 존재하지 않습니다."));
-
-        // 작성자 != 유저, 하지만 유저의 ROLE이 ADMIN이면 수정이나 삭제가 가능하도록
-        if(!post.getUserName().equals(accessName) && user.getRole().equals(UserRole.USER)) {
-            throw new UserException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
-        }
-
-        return post;
-    }
 
     public PostDto update(Long id, PostRequest postRequest, String accessName) {
-        Post post = checkException(id, accessName);
+        Post post = checkException.checkEnableChangePost(id, accessName);
 
         post.setTitle(postRequest.getTitle());
         post.setBody(postRequest.getBody());
@@ -85,11 +68,60 @@ public class PostService {
     }
 
     public PostDto delete(Long id, String accessName) {
-        Post post = checkException(id, accessName);
+        Post post = checkException.checkEnableChangePost(id, accessName);
 
         postRepository.delete(post);
 
         return new PostDto(post.getId(), post.getTitle(), post.getBody(),
                 post.getUserName(), post.getCreatedAt(), post.getLastModifiedAt());
+    }
+
+    public Page<CommentDto> printComment(Long postId, Pageable pageable, String userName) {
+        // 작성자(유저)가 DB에 존재하지 않을 경우
+        checkException.checkUser(userName);
+
+        // 포스트가 DB에 존재하지 않을 경우
+        checkException.checkPost(postId);
+
+        Page<Comment> comments = commentRepository.findByPostId(postId, pageable);
+        Page<CommentDto> commentDtos = comments.map(comment -> new CommentDto(comment.getId(),
+                comment.getComment(), comment.getUser().getUserName(), comment.getPost().getId(),
+                comment.getCreatedAt()));
+
+        return commentDtos;
+    }
+
+    public CommentDto createComment(CommentRequest commentRequest, Long postId, String userName) {
+        // 작성자(유저)가 DB에 존재하지 않을 경우
+        User user = checkException.checkUser(userName);
+
+        // 포스트가 DB에 존재하지 않을 경우
+        Post post = checkException.checkPost(postId);
+
+        Comment savedComment = commentRepository.save(CommentDto.toEntity(commentRequest.getComment(), user, post));
+
+        return new CommentDto(savedComment.getId(), savedComment.getComment(), savedComment.getUser().getUserName(),
+                savedComment.getPost().getId(), savedComment.getCreatedAt());
+    }
+
+    public CommentDto updateComment(CommentRequest commentRequest, Long postId, Long id, String userName) {
+        // 댓글 수정 가능 여부 체크
+        Comment comment = checkException.checkEnableChangeComment(postId, userName, id);
+
+        comment.setComment(commentRequest.getComment());
+
+        Comment savedComment = commentRepository.save(comment);
+
+        return new CommentDto(savedComment.getId(), savedComment.getComment(), savedComment.getUser().getUserName(),
+                savedComment.getPost().getId(), savedComment.getCreatedAt());
+    }
+
+    public Long deleteComment(Long postId, Long id, String userName) {
+        // 댓글 수정 가능 여부 체크
+        Comment comment = checkException.checkEnableChangeComment(postId, userName, id);
+
+        commentRepository.delete(comment);
+
+        return comment.getId();
     }
 }

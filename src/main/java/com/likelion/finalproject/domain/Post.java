@@ -14,7 +14,8 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder@Where(clause = "is_deleted = 0")
+@Builder
+@Where(clause = "is_deleted = 0")
 @SQLDelete(sql = "UPDATE post SET is_deleted = true where id = ?")
 public class Post extends BaseEntity {
     @Id
