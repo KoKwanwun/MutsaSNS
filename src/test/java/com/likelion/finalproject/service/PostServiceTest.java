@@ -7,10 +7,7 @@ import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.domain.dto.post.PostRequest;
 import com.likelion.finalproject.exception.ErrorCode;
 import com.likelion.finalproject.exception.UserException;
-import com.likelion.finalproject.repository.CommentRepository;
-import com.likelion.finalproject.repository.LikeRepository;
-import com.likelion.finalproject.repository.PostRepository;
-import com.likelion.finalproject.repository.UserRepository;
+import com.likelion.finalproject.repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,10 +29,11 @@ class PostServiceTest {
     private UserRepository userRepository = Mockito.mock(UserRepository.class);
     private CommentRepository commentRepository = Mockito.mock(CommentRepository.class);
     private LikeRepository likeRepository = Mockito.mock(LikeRepository.class);
+    private AlarmRepository alarmRepository = Mockito.mock(AlarmRepository.class);
 
     @BeforeEach
     void setUp() {
-        postService = new PostService(checkException, postRepository, userRepository, commentRepository, likeRepository);
+        postService = new PostService(checkException, postRepository, userRepository, commentRepository, likeRepository, alarmRepository);
     }
 
     Long testUserId = 1L;
