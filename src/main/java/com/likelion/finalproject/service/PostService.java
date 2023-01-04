@@ -170,4 +170,19 @@ public class PostService {
         // 좋아요 개수 리턴
         return likeRepository.countByPostId(postId);
     }
+
+    /**
+     * 마이피드
+     */
+    public Page<PostDto> myFeed(Pageable pageable, String userName) {
+        // 작성자(유저)가 DB에 존재하지 않을 경우
+        checkException.checkUser(userName);
+
+        Page<Post> posts = postRepository.findByUserName(userName, pageable);
+        Page<PostDto> postDtos = posts.map(post -> new PostDto(post.getId(),
+                post.getTitle(), post.getBody(), post.getUserName(),
+                post.getCreatedAt(), post.getLastModifiedAt()));
+
+        return postDtos;
+    }
 }

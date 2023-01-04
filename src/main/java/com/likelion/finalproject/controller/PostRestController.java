@@ -46,7 +46,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "포스트 등록")
     @PostMapping()
-    public Response<PostResponse> createPost(@RequestBody PostRequest postRequest, @ApiIgnore Authentication authentication){
+    public Response<PostResponse> createPost(@RequestBody PostRequest postRequest, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.create(postRequest, authentication.getName());
         return Response.success(new PostResponse("포스트 등록 완료", postDto.getId()));
     }
@@ -54,7 +54,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "포스트 수정")
     @PutMapping("/{id}")
-    public Response<PostResponse> updatePost(@RequestBody PostRequest postRequest, @PathVariable Long id, @ApiIgnore Authentication authentication){
+    public Response<PostResponse> updatePost(@RequestBody PostRequest postRequest, @PathVariable Long id, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.update(id, postRequest, authentication.getName());
         return Response.success(new PostResponse("포스트 수정 완료", postDto.getId()));
     }
@@ -62,7 +62,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "포스트 삭제")
     @DeleteMapping("/{id}")
-    public Response<PostResponse> deletePost(@PathVariable Long id, @ApiIgnore Authentication authentication){
+    public Response<PostResponse> deletePost(@PathVariable Long id, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.delete(id, authentication.getName());
         return Response.success(new PostResponse("포스트 삭제 완료", postDto.getId()));
     }
@@ -73,7 +73,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "댓글 조회")
     @GetMapping("/{postId}/comments")
-    public Response<Page<CommentDto>> printComment(@PathVariable Long postId, @ApiIgnore @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable, @ApiIgnore Authentication authentication){
+    public Response<Page<CommentDto>> printComment(@PathVariable Long postId, @ApiIgnore @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable, @ApiIgnore Authentication authentication) {
         Page<CommentDto> commentDtos = postService.printComment(postId, pageable, authentication.getName());
         return Response.success(commentDtos);
     }
@@ -81,7 +81,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "댓글 작성")
     @PostMapping("/{postId}/comments")
-    public Response<CommentDto> createComment(@PathVariable Long postId, @RequestBody CommentRequest commentRequest, @ApiIgnore Authentication authentication){
+    public Response<CommentDto> createComment(@PathVariable Long postId, @RequestBody CommentRequest commentRequest, @ApiIgnore Authentication authentication) {
         CommentDto commentDto = postService.createComment(commentRequest, postId, authentication.getName());
         return Response.success(commentDto);
     }
@@ -89,7 +89,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "댓글 수정")
     @PutMapping("/{postId}/comments/{id}")
-    public Response<CommentDto> updateComment(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentRequest commentRequest, @ApiIgnore Authentication authentication){
+    public Response<CommentDto> updateComment(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentRequest commentRequest, @ApiIgnore Authentication authentication) {
         CommentDto commentDto = postService.updateComment(commentRequest, postId, id, authentication.getName());
         return Response.success(commentDto);
     }
@@ -97,7 +97,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "댓글 삭제")
     @DeleteMapping("/{postId}/comments/{id}")
-    public Response<CommentResponse> deleteComment(@PathVariable Long postId, @PathVariable Long id, @ApiIgnore Authentication authentication){
+    public Response<CommentResponse> deleteComment(@PathVariable Long postId, @PathVariable Long id, @ApiIgnore Authentication authentication) {
         Long commentId = postService.deleteComment(postId, id, authentication.getName());
         return Response.success(new CommentResponse("댓글 삭제 완료", commentId));
     }
@@ -108,7 +108,7 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "좋아요 누르기")
     @PostMapping("/{postId}/likes")
-    public Response<String> clickLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+    public Response<String> clickLike(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
         postService.clickLike(postId, authentication.getName());
         return Response.success("좋아요를 눌렀습니다.");
     }
@@ -116,8 +116,19 @@ public class PostRestController {
     @Lock
     @ApiOperation(value = "좋아요 개수")
     @GetMapping("/{postId}/likes")
-    public Response<Long> countLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+    public Response<Long> countLike(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
         Long cntLike = postService.countLike(postId, authentication.getName());
         return Response.success(cntLike);
+    }
+
+    /**
+     * 마이피드
+     */
+    @Lock
+    @ApiOperation(value = "마이피드")
+    @PostMapping("/my")
+    public Response<Page<PostDto>> myFeed(@ApiIgnore @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable, @ApiIgnore Authentication authentication) {
+        Page<PostDto> posts = postService.myFeed(pageable, authentication.getName());
+        return Response.success(posts);
     }
 }
