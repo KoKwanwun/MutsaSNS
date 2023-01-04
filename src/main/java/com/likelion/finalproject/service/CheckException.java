@@ -7,6 +7,7 @@ import com.likelion.finalproject.domain.UserRole;
 import com.likelion.finalproject.exception.ErrorCode;
 import com.likelion.finalproject.exception.UserException;
 import com.likelion.finalproject.repository.CommentRepository;
+import com.likelion.finalproject.repository.LikeRepository;
 import com.likelion.finalproject.repository.PostRepository;
 import com.likelion.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class CheckException {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     public Post checkPost(Long id){
         // 포스트 존재 X
@@ -35,6 +37,13 @@ public class CheckException {
         // 댓글이 DB에 존재하지 않을 경우
         return commentRepository.findById(id)
                 .orElseThrow(() -> new UserException(ErrorCode.COMMENT_NOT_FOUND, ErrorCode.COMMENT_NOT_FOUND.getMessage()));
+    }
+
+    public void checkLike(Long postId, Long userId) {
+        likeRepository.findByPostIdAndUserId(postId, userId)
+                .ifPresent(like -> {
+                    throw new UserException(ErrorCode.ALREADY_CLICK_LIKE, ErrorCode.ALREADY_CLICK_LIKE.getMessage());
+                });
     }
 
     public Post checkEnableChangePost(Long id, String userName) {

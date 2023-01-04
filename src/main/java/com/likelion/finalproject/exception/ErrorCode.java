@@ -17,7 +17,8 @@ public enum ErrorCode {
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 ROLE은 없습니다."),
     ALREADY_ROLE_USER(HttpStatus.CONFLICT, "이미 role이 user입니다."),
     ALREADY_ROLE_ADMIN(HttpStatus.CONFLICT, "이미 role이 admin입니다."),
-    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글이 없습니다.")
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글이 없습니다."),
+    ALREADY_CLICK_LIKE(HttpStatus.CONFLICT, "이미 좋아요를 눌렀습니다.")
     ;
 
     private HttpStatus status;
