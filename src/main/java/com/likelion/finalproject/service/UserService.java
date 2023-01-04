@@ -1,7 +1,7 @@
 package com.likelion.finalproject.service;
 
-import com.likelion.finalproject.domain.User;
-import com.likelion.finalproject.domain.UserRole;
+import com.likelion.finalproject.domain.entity.User;
+import com.likelion.finalproject.domain.dto.user.UserRole;
 import com.likelion.finalproject.domain.dto.user.UserDto;
 import com.likelion.finalproject.domain.dto.user.UserJoinRequest;
 import com.likelion.finalproject.domain.dto.user.UserRoleRequest;
