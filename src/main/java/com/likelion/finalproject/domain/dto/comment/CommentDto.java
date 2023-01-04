@@ -1,8 +1,8 @@
 package com.likelion.finalproject.domain.dto.comment;
 
-import com.likelion.finalproject.domain.Comment;
-import com.likelion.finalproject.domain.Post;
-import com.likelion.finalproject.domain.User;
+import com.likelion.finalproject.domain.entity.Comment;
+import com.likelion.finalproject.domain.entity.Post;
+import com.likelion.finalproject.domain.entity.User;
 import lombok.*;
 
 @AllArgsConstructor

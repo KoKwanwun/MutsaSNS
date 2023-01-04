@@ -1,9 +1,9 @@
 package com.likelion.finalproject.service;
 
-import com.likelion.finalproject.domain.Comment;
-import com.likelion.finalproject.domain.Post;
-import com.likelion.finalproject.domain.User;
-import com.likelion.finalproject.domain.UserRole;
+import com.likelion.finalproject.domain.entity.Comment;
+import com.likelion.finalproject.domain.entity.Post;
+import com.likelion.finalproject.domain.entity.User;
+import com.likelion.finalproject.domain.dto.user.UserRole;
 import com.likelion.finalproject.exception.ErrorCode;
 import com.likelion.finalproject.exception.UserException;
 import com.likelion.finalproject.repository.CommentRepository;

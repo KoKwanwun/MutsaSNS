@@ -1,5 +1,6 @@
-package com.likelion.finalproject.domain;
+package com.likelion.finalproject.domain.entity;
 
+import com.likelion.finalproject.domain.dto.user.UserRole;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

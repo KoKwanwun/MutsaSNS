@@ -1,6 +1,5 @@
 package com.likelion.finalproject.domain.dto.user;
 
-import com.likelion.finalproject.domain.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

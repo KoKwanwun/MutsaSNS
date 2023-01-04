@@ -1,4 +1,4 @@
-package com.likelion.finalproject.domain;
+package com.likelion.finalproject.domain.entity;
 
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;

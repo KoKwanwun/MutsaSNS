@@ -1,4 +1,4 @@
-package com.likelion.finalproject.domain;
+package com.likelion.finalproject.domain.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

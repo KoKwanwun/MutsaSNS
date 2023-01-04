@@ -1,9 +1,9 @@
 package com.likelion.finalproject.service;
 
-import com.likelion.finalproject.domain.Comment;
-import com.likelion.finalproject.domain.Like;
-import com.likelion.finalproject.domain.Post;
-import com.likelion.finalproject.domain.User;
+import com.likelion.finalproject.domain.entity.Comment;
+import com.likelion.finalproject.domain.entity.Like;
+import com.likelion.finalproject.domain.entity.Post;
+import com.likelion.finalproject.domain.entity.User;
 import com.likelion.finalproject.domain.dto.comment.CommentDto;
 import com.likelion.finalproject.domain.dto.comment.CommentRequest;
 import com.likelion.finalproject.domain.dto.post.PostDto;
