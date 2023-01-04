@@ -19,6 +19,7 @@ public class CommentDto {
     private Long postId;
 
     private String createdAt;
+    private String lastModifiedAt;
 
     public static Comment toEntity(String comment, User user, Post post){
         return Comment.builder()

@@ -101,4 +101,23 @@ public class PostRestController {
         Long commentId = postService.deleteComment(postId, id, authentication.getName());
         return Response.success(new CommentResponse("댓글 삭제 완료", commentId));
     }
+
+    /**
+     * 좋아요
+     */
+    @Lock
+    @ApiOperation(value = "좋아요 누르기")
+    @PostMapping("/{postId}/likes")
+    public Response<String> clickLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+        postService.clickLike(postId, authentication.getName());
+        return Response.success("좋아요를 눌렀습니다.");
+    }
+
+    @Lock
+    @ApiOperation(value = "좋아요 개수")
+    @GetMapping("/{postId}/likes")
+    public Response<Long> countLike(@PathVariable Long postId, @ApiIgnore Authentication authentication){
+        Long cntLike = postService.countLike(postId, authentication.getName());
+        return Response.success(cntLike);
+    }
 }
