@@ -1,4 +1,4 @@
-package com.likelion.finalproject.controller;
+package com.likelion.finalproject.controller.ui;
 
 import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.service.PostService;

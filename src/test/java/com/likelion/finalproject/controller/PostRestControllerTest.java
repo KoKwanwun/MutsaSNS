@@ -1,6 +1,7 @@
 package com.likelion.finalproject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.likelion.finalproject.controller.api.PostRestController;
 import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.domain.dto.post.PostRequest;
 import com.likelion.finalproject.exception.ErrorCode;

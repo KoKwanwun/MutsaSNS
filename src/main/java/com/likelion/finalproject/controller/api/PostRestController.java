@@ -1,14 +1,12 @@
-package com.likelion.finalproject.controller;
+package com.likelion.finalproject.controller.api;
 
 import com.likelion.finalproject.configuration.annotation.Lock;
 import com.likelion.finalproject.domain.dto.Response;
-import com.likelion.finalproject.domain.dto.comment.CommentDto;
-import com.likelion.finalproject.domain.dto.comment.CommentRequest;
-import com.likelion.finalproject.domain.dto.comment.CommentResponse;
 import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.domain.dto.post.PostRequest;
 import com.likelion.finalproject.domain.dto.post.PostResponse;
 import com.likelion.finalproject.service.PostService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor
+@Api(tags = "Post Api")
 public class PostRestController {
 
     private final PostService postService;
@@ -65,60 +64,6 @@ public class PostRestController {
     public Response<PostResponse> deletePost(@PathVariable Long id, @ApiIgnore Authentication authentication) {
         PostDto postDto = postService.delete(id, authentication.getName());
         return Response.success(new PostResponse("포스트 삭제 완료", postDto.getId()));
-    }
-
-    /**
-     * 댓글
-     */
-    @Lock
-    @ApiOperation(value = "댓글 조회")
-    @GetMapping("/{postId}/comments")
-    public Response<Page<CommentDto>> printComment(@PathVariable Long postId, @ApiIgnore @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable, @ApiIgnore Authentication authentication) {
-        Page<CommentDto> commentDtos = postService.printComment(postId, pageable, authentication.getName());
-        return Response.success(commentDtos);
-    }
-
-    @Lock
-    @ApiOperation(value = "댓글 작성")
-    @PostMapping("/{postId}/comments")
-    public Response<CommentDto> createComment(@PathVariable Long postId, @RequestBody CommentRequest commentRequest, @ApiIgnore Authentication authentication) {
-        CommentDto commentDto = postService.createComment(commentRequest, postId, authentication.getName());
-        return Response.success(commentDto);
-    }
-
-    @Lock
-    @ApiOperation(value = "댓글 수정")
-    @PutMapping("/{postId}/comments/{id}")
-    public Response<CommentDto> updateComment(@PathVariable Long postId, @PathVariable Long id, @RequestBody CommentRequest commentRequest, @ApiIgnore Authentication authentication) {
-        CommentDto commentDto = postService.updateComment(commentRequest, postId, id, authentication.getName());
-        return Response.success(commentDto);
-    }
-
-    @Lock
-    @ApiOperation(value = "댓글 삭제")
-    @DeleteMapping("/{postId}/comments/{id}")
-    public Response<CommentResponse> deleteComment(@PathVariable Long postId, @PathVariable Long id, @ApiIgnore Authentication authentication) {
-        Long commentId = postService.deleteComment(postId, id, authentication.getName());
-        return Response.success(new CommentResponse("댓글 삭제 완료", commentId));
-    }
-
-    /**
-     * 좋아요
-     */
-    @Lock
-    @ApiOperation(value = "좋아요 누르기")
-    @PostMapping("/{postId}/likes")
-    public Response<String> clickLike(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
-        postService.clickLike(postId, authentication.getName());
-        return Response.success("좋아요를 눌렀습니다.");
-    }
-
-    @Lock
-    @ApiOperation(value = "좋아요 개수")
-    @GetMapping("/{postId}/likes")
-    public Response<Long> countLike(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
-        Long cntLike = postService.countLike(postId, authentication.getName());
-        return Response.success(cntLike);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.likelion.finalproject.controller;
+package com.likelion.finalproject.controller.mission;
 
 import com.likelion.finalproject.service.AlgorithmService;
 import io.swagger.annotations.ApiOperation;

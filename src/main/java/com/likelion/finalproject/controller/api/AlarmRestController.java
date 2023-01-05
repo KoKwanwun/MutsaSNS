@@ -1,9 +1,10 @@
-package com.likelion.finalproject.controller;
+package com.likelion.finalproject.controller.api;
 
 import com.likelion.finalproject.configuration.annotation.Lock;
 import com.likelion.finalproject.domain.dto.Response;
 import com.likelion.finalproject.domain.dto.alarm.AlarmDto;
 import com.likelion.finalproject.service.AlarmService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/api/v1/alarms")
 @RequiredArgsConstructor
+@Api(tags = "Alarm Api")
 public class AlarmRestController {
 
     private final AlarmService alarmService;

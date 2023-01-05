@@ -1,6 +1,7 @@
 package com.likelion.finalproject.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.likelion.finalproject.controller.api.UserRestController;
 import com.likelion.finalproject.domain.dto.user.UserDto;
 import com.likelion.finalproject.domain.dto.user.UserJoinRequest;
 import com.likelion.finalproject.domain.dto.user.UserLoginRequest;
@@ -16,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
