@@ -3,8 +3,10 @@ package com.likelion.finalproject.configuration;
 import com.likelion.finalproject.configuration.annotation.Lock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
@@ -22,9 +24,18 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.OAS_30)
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
+                .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.likelion.finalproject"))  // 내 패키지에 있는 컨트롤러만 보이게
+                .apis(RequestHandlerSelectors.basePackage("com.likelion.finalproject.controller.api"))  // 내 패키지에 있는 컨트롤러만 보이게
                 .paths(PathSelectors.any())
+                .build();
+    }
+
+    public ApiInfo apiInfo(){
+        return new ApiInfoBuilder()
+                .title("MutsaSNS API with Swagger")
+                .version("1.0")
+                .description("고관운 개인프로젝트")
                 .build();
     }
 
