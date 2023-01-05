@@ -126,7 +126,7 @@ public class PostRestController {
      */
     @Lock
     @ApiOperation(value = "마이피드")
-    @PostMapping("/my")
+    @GetMapping("/my")
     public Response<Page<PostDto>> myFeed(@ApiIgnore @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable, @ApiIgnore Authentication authentication) {
         Page<PostDto> posts = postService.myFeed(pageable, authentication.getName());
         return Response.success(posts);
