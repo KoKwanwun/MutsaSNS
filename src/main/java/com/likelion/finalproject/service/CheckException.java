@@ -39,10 +39,17 @@ public class CheckException {
                 .orElseThrow(() -> new UserException(ErrorCode.DATABASE_ERROR, "DB에 포스트 작성자가 존재하지 않습니다."));
     }
 
-    public Comment checkComment(Long id, Long postId){
+    public Comment checkComment(Long id, Long postId, String userName, User user){
         // 댓글이 DB에 존재하지 않을 경우
-        return commentRepository.findByIdAndPostId(id, postId)
+         Comment comment = commentRepository.findByIdAndPostId(id, postId)
                 .orElseThrow(() -> new UserException(ErrorCode.COMMENT_NOT_FOUND, ErrorCode.COMMENT_NOT_FOUND.getMessage()));
+
+        // 작성자 != 유저, 하지만 유저의 ROLE이 ADMIN이면 수정이나 삭제가 가능하도록
+        if(!comment.getUser().getUserName().equals(userName) && user.getRole().equals(UserRole.USER)) {
+            throw new UserException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
+        }
+
+        return comment;
     }
 
     public void checkLike(Long postId, Long userId) {
@@ -62,18 +69,5 @@ public class CheckException {
         }
 
         return post;
-    }
-
-    public Comment checkEnableChangeComment(Long postId, String userName, Long commentId) {
-        User user = checkUser(userName);
-        Post post = checkPost(postId);
-        Comment comment = checkComment(commentId, post.getId());
-
-        // 작성자 != 유저, 하지만 유저의 ROLE이 ADMIN이면 수정이나 삭제가 가능하도록
-        if(!comment.getUser().getUserName().equals(userName) && user.getRole().equals(UserRole.USER)) {
-            throw new UserException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
-        }
-
-        return comment;
     }
 }

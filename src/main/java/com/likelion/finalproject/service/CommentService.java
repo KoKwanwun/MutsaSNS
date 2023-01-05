@@ -84,7 +84,7 @@ public class CommentService {
         User postUser = checkException.checkPostUser(post.getUserName());
 
         // 댓글 수정 가능 여부 체크
-        Comment comment = checkException.checkEnableChangeComment(postId, userName, id);
+        Comment comment = checkException.checkComment(id, post.getId(), userName, user);
 
         comment.setComment(commentRequest.getComment());
 
@@ -110,7 +110,7 @@ public class CommentService {
         User postUser = checkException.checkPostUser(post.getUserName());
 
         // 댓글 수정 가능 여부 체크
-        Comment comment = checkException.checkEnableChangeComment(postId, userName, id);
+        Comment comment = checkException.checkComment(id, post.getId(), userName, user);
 
         commentRepository.delete(comment);
 
