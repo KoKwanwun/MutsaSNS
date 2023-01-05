@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Table(name = "\"like\"")
 @Where(clause = "is_deleted = 0")
-@SQLDelete(sql = "UPDATE like SET is_deleted = true where id = ?")
+@SQLDelete(sql = "UPDATE \"like\" SET is_deleted = true where id = ?")
 public class Like extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
