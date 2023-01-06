@@ -26,10 +26,7 @@ public class CommentService {
     /**
      * 댓글
      */
-    public Page<CommentDto> printComment(Long postId, Pageable pageable, String userName) {
-        // 작성자(유저)가 DB에 존재하지 않을 경우
-        checkException.checkUser(userName);
-
+    public Page<CommentDto> printComment(Long postId, Pageable pageable) {
         // 포스트가 DB에 존재하지 않을 경우
         checkException.checkPost(postId);
 

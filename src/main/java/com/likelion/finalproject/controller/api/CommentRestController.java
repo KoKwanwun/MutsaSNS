@@ -28,11 +28,10 @@ public class CommentRestController {
     /**
      * 댓글
      */
-    @Lock
     @ApiOperation(value = "댓글 조회")
     @GetMapping("/{postId}/comments")
-    public Response<Page<CommentDto>> printComment(@PathVariable Long postId, @ApiIgnore @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable, @ApiIgnore Authentication authentication) {
-        Page<CommentDto> commentDtos = commentService.printComment(postId, pageable, authentication.getName());
+    public Response<Page<CommentDto>> printComment(@PathVariable Long postId, @ApiIgnore @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CommentDto> commentDtos = commentService.printComment(postId, pageable);
         return Response.success(commentDtos);
     }
 

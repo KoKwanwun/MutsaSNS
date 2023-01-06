@@ -29,11 +29,10 @@ public class LikeRestController {
         return Response.success("좋아요를 눌렀습니다.");
     }
 
-    @Lock
     @ApiOperation(value = "좋아요 개수")
     @GetMapping("/{postId}/likes")
-    public Response<Long> countLike(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
-        Long cntLike = likeService.countLike(postId, authentication.getName());
+    public Response<Long> countLike(@PathVariable Long postId) {
+        Long cntLike = likeService.countLike(postId);
         return Response.success(cntLike);
     }
 }

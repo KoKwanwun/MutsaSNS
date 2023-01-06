@@ -46,10 +46,7 @@ public class LikeService {
                         .build());
     }
 
-    public Long countLike(Long postId, String userName) {
-        // 작성자(유저)가 DB에 존재하지 않을 경우
-        checkException.checkUser(userName);
-
+    public Long countLike(Long postId) {
         // 포스트가 DB에 존재하지 않을 경우
         checkException.checkPost(postId);
 
