@@ -9,30 +9,52 @@
         <main>
             <div class="container-fluid px-4">
                 <h3 class="mt-4" style="margin-bottom: 20px">게시판 상세</h3>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <table id="datatablesSimple" style="text-align: center">
-                            <thead>
-                            <tr>
-                                <th style="text-align: center">Id</th>
-                                <th style="text-align: center">제목</th>
-                                <th style="text-align: center">내용</th>
-                                <th style="text-align: center">작성자</th>
-                                <th style="text-align: center">작성일</th>
-                                <th style="text-align: center">수정일</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>[[${post.id}]]</td>
-                                <td>[[${post.title}]]</td>
-                                <td>[[${post.body}]]</td>
-                                <td>[[${post.userName}]]</td>
-                                <td>[[${post.createdAt}]]</td>
-                                <td>[[${post.lastModifiedAt}]]</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <div style="width: 100%;">
+                    <div class="card mb-4" style="float: left; width: 58%; margin-right: 2%; height: 70vh;">
+                        <div class="card-header">
+                            <div style="float: left;"><h4>[[${post.title}]]</h4></div>
+                            <div style="float: right;">
+                                <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
+                                    <li class="nav-item dropdown">
+                                        <button type="button" class="btn btn-outline-secondary">🤍 개수(기본 0)</button>
+                                        <button type="button" class="btn btn-outline-secondary" id="navbarDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">· · ·</button>
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                            <li><a class="dropdown-item" href="#">수정</a></li>
+                                            <li><hr class="dropdown-divider" /></li>
+                                            <li><a class="dropdown-item" href="#">삭제</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">[[${post.userName}]]</li>
+                            <li class="list-group-item">
+                                <div class="card-group">
+                                    <div style="width: 50%">작성일 : [[${post.createdAt}]]</div>
+                                    <div>수정일 : [[${post.lastModifiedAt}]]</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">[[${post.body}]]</li>
+                        </ul>
+                    </div>
+                    <div class="card mb-4" style="float: left; width: 40%; height: 70vh;">
+                        <div class="card-header">
+                            <H4>댓글</H4>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <form action="/api/v1/posts/[[${post.id}]]/comments" method="post">
+                                    <!-- 여기에 아이디, 로그인 필요 -->
+                                    <input type="text" name="comment" style="width: 100%">
+                                    <input type="submit" value="작성" style="float: right; margin-top: 1%">
+                                </form>
+                            </li>
+                            <div class="card-group">
+                                <!-- 댓글 리스트 -->
+                            </div>
+                            <li class="list-group-item">내용</li>
+                        </ul>
                     </div>
                 </div>
             </div>

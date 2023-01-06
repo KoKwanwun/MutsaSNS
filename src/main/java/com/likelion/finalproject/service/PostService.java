@@ -10,6 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -80,6 +83,20 @@ public class PostService {
         Page<PostDto> postDtos = posts.map(post -> new PostDto(post.getId(),
                 post.getTitle(), post.getBody(), post.getUserName(),
                 post.getCreatedAt(), post.getLastModifiedAt()));
+
+        return postDtos;
+    }
+
+    /**
+     * 포스트 List 리턴
+     */
+    public List<PostDto> printPostsList() {
+        List<Post> posts = postRepository.findAll();
+        List<PostDto> postDtos = posts.stream()
+                .map(post -> new PostDto(post.getId(),
+                        post.getTitle(), post.getBody(), post.getUserName(),
+                        post.getCreatedAt(), post.getLastModifiedAt()))
+                .collect(Collectors.toList());
 
         return postDtos;
     }

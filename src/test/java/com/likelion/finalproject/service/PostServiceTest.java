@@ -27,13 +27,10 @@ class PostServiceTest {
 
     private PostRepository postRepository = Mockito.mock(PostRepository.class);
     private UserRepository userRepository = Mockito.mock(UserRepository.class);
-    private CommentRepository commentRepository = Mockito.mock(CommentRepository.class);
-    private LikeRepository likeRepository = Mockito.mock(LikeRepository.class);
-    private AlarmRepository alarmRepository = Mockito.mock(AlarmRepository.class);
 
     @BeforeEach
     void setUp() {
-        postService = new PostService(checkException, postRepository, userRepository, commentRepository, likeRepository, alarmRepository);
+        postService = new PostService(checkException, postRepository);
     }
 
     Long testUserId = 1L;
