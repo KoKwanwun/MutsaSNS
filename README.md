@@ -1,65 +1,110 @@
 # MutsaSNS 프로젝트
-멋쟁이사자처럼 최종 프로젝트로, 회원가입, 로그인, 게시판 기능이 있으며, API 형태로 리턴하도록 구현했습니다.
-View는 현재 구현중입니다.
+회원가입 · 로그인 · 게시판 · 댓글 · 좋아요 · 알람 기능이 있는 SNS 프로젝트.<br>
+화면 UI는 현재 구현중
 
 ## 접속 링크
 - GitLab : https://gitlab.com/kkw1232/finalproject_kokwanwun_team9
 - Swagger : http://ec2-54-180-98-1.ap-northeast-2.compute.amazonaws.com:8080/swagger-ui/
 - 화면 UI : http://ec2-54-180-98-1.ap-northeast-2.compute.amazonaws.com:8080/posts
 
-## 체크리스트
-- Swagger 적용
-- CI/CD
-- 회원가입 / 로그인 구현
-- 게시판 리스트, 상세, 등록, 수정, 삭제 기능 구현
-- UserRestController, PostRestController 테스트 코드 작성
-- 도전과제(User 등급업 기능)
-- 도전과제(화면 UI 구현)
+## 개발환경
+- Java 11
+- Build : Gradle 7.5.1
+- Framework : Springboot 2.7.6
+- Database : MySQL 8.0
+- CI & CD : GitLab
+- Server : AWS EC2
+- Deploy : Docker
+- IDE : IntelliJ
 
-## 접근 방법
+## 체크리스트
+- AWS EC2에 Docker 배포
+- Gitlab CI & Crontab CD
+- Swagger
+- 회원가입
+- 로그인
+- 포스트 작성, 수정, 삭제, 리스트
+- 화면 UI 개발 : 게시판 조회, 게시판 상세(구현중)
+- ADMIN 회원으로 등급업하는 기능
+- ADMIN 회원이 로그인 시 자신이 쓴 글이 아닌 글과 댓글에 수정, 삭제를 할 수 있는 기능
+- 댓글
+- 좋아요
+- 마이피드
+- 알림
+- Swagger에 ApiOperation을 써서 Controller 설명 보이도록 설정
+
+## 특이사항
 - Swagger 적용
-  - Swagger 구현은 편의성 개선에서 어려움이 있었습니다.
-  - Authorize UI 기능은 관련 자료가 모두 동일해서 제가 원하는 형태의 UI를 만들기 힘들었습니다.
-  - Swagger의 편의성을 위해 특정 Endpoint에만 Token을 인증했을 경우 접근할 수 있도록 했습니다.(예로, 회원가입, 로그인은 토큰 인증이 있으나 없으나 접근 가능하도록)
+  - Swagger의 편의성을 위해 특정 Endpoint에만 Token을 인증했을 경우 접근할 수 있도록 함. (예로, 회원가입, 로그인은 토큰 인증이 있으나 없으나 접근 가능하도록)
 ![image](https://user-images.githubusercontent.com/84280815/209634214-e942c8c0-52d3-4545-b5cb-af52b3a7d584.png)
 
 - CI/CD
-  - 제가 작성한 블로그를 참고했습니다. ([CI/CD 참고자료](https://velog.io/@id1232/GitLab-%EB%B9%8C%EB%93%9C-%EB%B0%8F-%EB%B0%B0%ED%8F%AC))
-  - 이후, main 브랜치 변경할 때만 CI/CD 되도록 수정했습니다
+  - main 브랜치 변경할 때만 CI/CD 되도록 수정함.
 
-- 회원가입 / 로그인 구현
-  - 회원가입, 로그인 구현은 Authentication에서 어려움이 있었습니다.
-  - Token 예외 처리 과정에서 어려움이 있었는데 AuthenticationEntryPoint, addFilterBefore를 추가적으로 넣어서 많은 예외처리를 할 수 있었습니다.
-참고 자료([JWT 토큰 만료에 대한 예외처리](https://velog.io/@hellonayeon/spring-boot-jwt-expire-exception), [스프링시큐리티 JWT 예외처리](https://velog.io/@dltkdgns3435/%EC%8A%A4%ED%94%84%EB%A7%81%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-JWT-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC))
+- Token 예외처리
+  - Token 예외 처리를 AuthenticationEntryPoint, addFilterBefore를 추가적으로 넣어서 해결했음.
+(참고 자료 : [JWT 토큰 만료에 대한 예외처리](https://velog.io/@hellonayeon/spring-boot-jwt-expire-exception), [스프링시큐리티 JWT 예외처리](https://velog.io/@dltkdgns3435/%EC%8A%A4%ED%94%84%EB%A7%81%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-JWT-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC))
 
-- 게시판 리스트, 상세, 등록, 수정, 삭제 기능 구현
-  - 게시판 기능은 Auditing 기능 구현에서 어려움이 있었습니다.
-  - Auditing : createdAt, lastModifiedAt을 `2022/12/27 13:40:51`의 형태로 하기 위해 많은 시간을 투자했습니다. String 형태로 바꾸고 해결했지만, deletedAt은 해결하지 못하여 isDeleted로 삭제 여부만 확인할 수 있도록 수정했습니다. 또한, Docker
-서버에 띄운 후 게시판을 등록하면, Docker의 서버 시간으로 등록이 되어, ZonedDateTime을 `Asia/Seoul`으로 하여 어디서나 서울 시간으로 되도록 설정했습니다.
-    ([JPA Auditing 형식 변경](https://kimseungjae.tistory.com/13))
+- Auditing
+  - createdAt, lastModifiedAt을 `2022/12/27 13:40:51`의 형태로 저장하기 위해 String 형태로 바꾸어 저장 (참고 자료 : [JPA Auditing 형식 변경](https://kimseungjae.tistory.com/13))
+  - isDeleted로 삭제 여부만 확인할 수 있도록 설정
+  - Docker 서버에 띄운 후 게시판을 등록하면, Docker의 서버 시간으로 등록이 되어, ZonedDateTime을 `Asia/Seoul`으로 하여 어디서나 서울 시간으로 되도록 설정
 
-- UserRestController, PostRestController 테스트 코드 작성
-  - Test 코드를 짜는 과정에서는 많은 어려움이 있었습니다. 이 과정에서는 강사님의 Git을 많이 활용했습니다.
+- Soft Delete
+  - delete 메소드가 호출되었을 때, 물리적으로 삭제하는 것이 아닌 논리적으로 삭제하도록 update문이 실행되도록 함.
+
+- Like 테이블 설정
+  - Like 테이블을 생성할 때, SQL문의 LIKE 연산자로 인식하므로 문자열로 설정해줘야 함. : `@Table(name = "\"like\"")`
+
+- 알람 설정
+  - 자신의 게시글에 좋아요나 댓글이 달면 알림 DB에 저장되지 않도록 설정
 
 - 도전과제(User 등급업 기능)
-  - 초기 ADMIN 역할의 유저는 DB에서 수동 설정하도록 했습니다.
-  - 이 기능에는 많은 예외가 있었는데, 이미 USER인 경우, 이미 ADMIN인 경우, 유저가 ADMIN이 아닌경우, 입력된 role이 정해진 값이 아닌경우를 모두 예외 처리 했습니다.
-  - 또한, enum 형태로 받기 위해 UserRole 클래스에 메소드를 추가했습니다.
+  - 초기 ADMIN 역할의 유저는 DB에서 수동 설정
+  - 이미 USER인 경우, 이미 ADMIN인 경우, 유저가 ADMIN이 아닌경우, 입력된 role이 정해진 값이 아닌 경우를 모두 예외 처리함.
+  - 또한, enum 형태로 받기 위해 UserRole 클래스에 하위 메소드를 추가했습니다. (대소문자 관계없이 입력받을 수 있음)
+    ```java
+    @JsonCreator
+    public static UserRole create(String requestValue) {
+    return Stream.of(values())
+    .filter(v -> v.toString().equalsIgnoreCase(requestValue))
+    .findFirst()
+    .orElse(null);
+    }
+    ```
 
 - 도전과제(화면 UI 구현)
-  - Startbootstrap 사이트를 활용했습니다. 하지만 예상과는 다르게 템플릿을 제 프로젝트에 적용하는 것에 어려움이 있었고, 결국 포스트 리스트, 상세 기능에만 적용할 수 있었습니다. 이 부분에서는 리펙토링 시간이나 2차 프로젝트에 여유가 있다면 보완할 것입니다.
-
-## 특이 사항
-- 아쉬웠던 점 : 예외 처리, Swagger 편의성 개선을 위해 시간을 많이 써서 도전과제인 화면 UI 부분을 완성하지 못한 부분이 아쉬웠습니다.
+  - Startbootstrap 사이트를 활용.
+  - 현재 게시판 목록은 구현 완료, 게시판 상세 구현중
 
 ## Endpoint
 ### View (구현중)
 - 게시판 목록 `GET /posts`
-![image](https://user-images.githubusercontent.com/84280815/209626018-113485ad-5d33-4ad6-85e0-7c8772f1ab30.png)
+![image](https://user-images.githubusercontent.com/84280815/211489523-c8aed09d-533b-432b-b4fb-c97af1b08344.png)
 - 게시판 상세 `GET /posts/{id}`
-![image](https://user-images.githubusercontent.com/84280815/209626279-a493a468-aa59-481b-82c2-def43d1c9a72.png)
+![image](https://user-images.githubusercontent.com/84280815/211489701-4d97e4b0-5456-4fd7-9717-e4d5c30798ca.png)
 
-### API
+### Endpoint Info
+| METHOD | URL                                  | Description             | JWT Required |
+|--------|--------------------------------------|-------------------------|:------------:|
+| POST   | /api/v1/users/join                   | 회원가입                    |      X       |
+| POST   | /api/v1/users/login                  | 로그인                     |      X       |
+| POST   | /api/v1/users/{id}/role/change       | 회원 등급 변경 (ADMIN 등급만 가능) |      O       |
+| GET    | /api/v1/posts                        | 포스트 리스트                 |      X       |
+| POST   | /api/v1/posts                        | 포스트 등록                  |      O       |
+| PUT    | /api/v1/posts/{id}                   | 포스트 수정                  |      O       |
+| DELETE | /api/v1/posts/{id}                   | 포스트 삭제                  |      O       |
+| GET    | /api/v1/posts/{postsId}              | 포스트 상세                  |      X       |
+| GET    | /api/v1/posts/my                     | 마이피드                    |      O       |
+| GET    | /api/v1/posts/{postId}/comments      | 댓글 조회                   |      X       |
+| POST   | /api/v1/posts/{postId}/comments      | 댓글 작성                   |      O       |
+| PUT    | /api/v1/posts/{postId}/comments/{id} | 댓글 수정                   |      O       |
+| DELETE | /api/v1/posts/{postId}/comments/{id} | 댓글 삭제                   |      O       |
+| POST   | /api/v1/posts/{postId}/likes         | 좋아요 누르기                 |      O       |
+| GET    | /api/v1/posts/{postId}/likes         | 좋아요 개수                  |      X       |
+| GET    | /api/v1/alarms                       | 알람 리스트 조회               |      O       |
+
+### Endpoint Input, Return Example
 - 회원가입 `POST /api/v1/users/join`
   - 입력 (JSON 형식)
     ```json
@@ -242,3 +287,265 @@ View는 현재 구현중입니다.
           }
       }
       ```
+      
+- 마이피드 `GET /api/v1/posts/my`
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": {
+            "content": [
+                {
+                  "id": 81,
+                  "title": "string",
+                  "body": "string",
+                  "userName": "123",
+                  "createdAt": "2023/01/10 17:32:11",
+                  "lastModifiedAt": "2023/01/10 17:32:11"
+      }        
+            ],
+            "pageable": {
+                "sort": {
+                    "empty": false,
+                    "sorted": true,
+                    "unsorted": false
+                },
+            "offset": 0,
+            "pageNumber": 0,
+            "pageSize": 20,
+            "paged": true,
+            "unpaged": false
+            },
+            "totalPages": 3,
+            "totalElements": 41,
+            "last": false,
+            "size": 20,
+            "number": 0,
+            "sort": {
+                "empty": false,
+                "sorted": true,
+                "unsorted": false
+            },
+            "numberOfElements": 20,
+            "first": true,
+            "empty": false
+        }
+    }
+    ```
+
+- 댓글 조회
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": {
+            "content": [
+                {
+                  "id": 1,
+                  "comment": "hello-comment",
+                  "userName": "kyeongrok45",
+                  "postId": 2,
+                  "createdAt": "2023/01/04 09:35:08",
+                  "lastModifiedAt": "2023/01/04 09:35:08"
+                }        
+            ],
+            "pageable": {
+                "sort": {
+                    "empty": false,
+                    "sorted": true,
+                    "unsorted": false
+                },
+            "offset": 0,
+            "pageNumber": 0,
+            "pageSize": 20,
+            "paged": true,
+            "unpaged": false
+            },
+            "totalPages": 3,
+            "totalElements": 41,
+            "last": false,
+            "size": 20,
+            "number": 0,
+            "sort": {
+                "empty": false,
+                "sorted": true,
+                "unsorted": false
+            },
+            "numberOfElements": 20,
+            "first": true,
+            "empty": false
+        }
+    }
+    ```
+    
+- 댓글 작성
+  - 입력 (JSON 형식)
+    ```json
+    {
+        "comment" : "test comment",
+    }
+    ```
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": {
+            "id": 49,
+            "comment": "string",
+            "userName": "123",
+            "postId": 2,
+            "createdAt": "2023/01/10 17:28:06",
+            "lastModifiedAt": "2023/01/10 17:28:06"
+        }
+    }
+    ```
+
+- 댓글 수정
+  - 입력 (JSON 형식)
+    ```json
+    {
+        "comment" : "update comment",
+    }
+    ```
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": {
+            "id": 49,
+            "comment": "update comment",
+            "userName": "123",
+            "postId": 2,
+            "createdAt": "2023/01/10 17:28:06",
+            "lastModifiedAt": "2023/01/10 17:28:06"
+        }
+    }
+    ```
+
+- 댓글 삭제
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": {
+            "message": "댓글 삭제 완료",
+            "postId": 49
+        }
+    }
+    ```
+
+- 좋아요 누르기
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": "좋아요를 눌렀습니다."
+    }
+    ```
+
+- 좋아요 개수
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": 4
+    }
+    ```
+
+- 알람 리스트 조회
+  - 리턴 (JSON 형식)
+    ```json
+    {
+        "resultCode": "SUCCESS",
+        "result": {
+            "content": [
+                {
+                  "id": 16,
+                  "alarmType": "NEW_COMMENT_ON_POST",
+                  "fromUserId": 29,
+                  "targetId": 5,
+                  "text": "new comment!",
+                  "createdAt": "2023/01/10 14:33:18",
+                  "lastModifiedAt": "2023/01/10 14:33:18"
+                },
+                {
+                  "id": 4,
+                  "alarmType": "NEW_LIKE_ON_POST",
+                  "fromUserId": 7,
+                  "targetId": 6,
+                  "text": "new like!",
+                  "createdAt": "2023/01/04 17:30:30",
+                  "lastModifiedAt": "2023/01/04 17:30:30"
+                }         
+            ],
+            "pageable": {
+                "sort": {
+                    "empty": false,
+                    "sorted": true,
+                    "unsorted": false
+                },
+            "offset": 0,
+            "pageNumber": 0,
+            "pageSize": 20,
+            "paged": true,
+            "unpaged": false
+            },
+            "totalPages": 3,
+            "totalElements": 41,
+            "last": false,
+            "size": 20,
+            "number": 0,
+            "sort": {
+                "empty": false,
+                "sorted": true,
+                "unsorted": false
+            },
+            "numberOfElements": 20,
+            "first": true,
+            "empty": false
+        }
+    }
+    ```
+      
+## Error Info
+|  Status Code  | Error Message                   | Description           |
+|:-------------:|--------------------------------------|-----------------------|
+|      409      | DUPLICATED_USER_NAME                   | UserName 중복           |
+|      404      | USERNAME_NOT_FOUND                  | UserName이 DB에 존재하지 않음 |
+|      401      | INVALID_PASSWORD                  | 패스워드가 일치하지 않음         |
+|      401      | INVALID_TOKEN                  | 유효하지 않은 Token임        |
+|      401      | INVALID_PERMISSION                  | 사용자가 권한이 없음           |
+|      404      | POST_NOT_FOUND                  | Post가 DB에 존재하지 않음     |
+|      500      | DATABASE_ERROR                  | DB 에러                 |
+|      404      | ROLE_NOT_FOUND                  | 입력받은 ROLE이 없음         |
+|      409      | ALREADY_ROLE_USER                  | 이미 Role이 USER임        |
+|      409      | ALREADY_ROLE_ADMIN                  | 이미 Role이 ADMIN임       |
+|      404      | COMMENT_NOT_FOUND                  | Comment가 DB에 존재하지 않음  |
+|      409      | ALREADY_CLICK_LIKE                  | 이미 좋아요를 눌렀음           |
+
+## 테스트 코드
+### Controller
+|  기능 구분  | 내용                                                                 |
+|:-------:|--------------------------------------------------------------------|
+|  회원가입   | 성공 / 실패 (1) userName이 중복인 경우                                       |
+|   로그인   | 성공 / 실패 (1) userName 없음 (2) password 일치하지 않음                       |
+| 포스트 상세  | 성공                                                                 |
+| 포스트 등록  | 성공 / 실패 (1) JWT 유효하지 않음 (2) JWT 안의 userName이 DB에 없음 (3) 사용자가 권한이 없음 |
+| 포스트 수정  | 성공 / 실패 (1) JWT 유효하지 않음 (2) 작성자 불일치 (3) DB 에러                      |
+| 포스트 삭제  | 성공 / 실패 (1) JWT 유효하지 않음 (2) 작성자 불일치 (3) DB 에러                      |
+| 포스트 리스트 | 성공                                                                 |
+|  마이피드   | 성공 / 실패 (1) 로그인 하지 않음                                              |
+|  댓글 등록  | 성공 / 실패 (1) 로그인 하지 않음 (2) 포스트 존재하지 않음                              |
+|  댓글 수정  | 성공 / 실패 (1) JWT 유효하지 않음 (2) 포스트 존재하지 않음 (3) 작성자 불일치 (4) DB 에러        |
+|  댓글 삭제  | 성공 / 실패 (1) JWT 유효하지 않음 (2) 포스트 존재하지 않음 (3) 작성자 불일치 (4) DB 에러        |
+| 댓글 리스트  | 성공         |
+| 좋아요 누르기 | 성공 / 실패 (1) 로그인 하지 않음 (2) 포스트 존재하지 않음                              |
+| 좋아요 개수  | 성공 / 실패 (1) 포스트 존재하지 않음                               |
+|   알람    | 성공 / 실패 (1) 로그인 하지 않음                               |
+
+### Service
+|  기능 구분  | 내용                                                                 |
+|:-------:|--------------------------------------------------------------------|
+| 포스트 등록  | 성공 / 실패 (1) 유저가 존재하지 않음                                            |
+| 포스트 수정  | 성공 / 실패 (1) 포스트 존재하지 않음 (2) 작성자 불일치 (3) 유저 존재하지 않음                 |
+| 포스트 삭제  | 성공 / 실패 (1) 포스트 존재하지 않음 (2) 작성자 불일치 (3) 유저 존재하지 않음                 |
