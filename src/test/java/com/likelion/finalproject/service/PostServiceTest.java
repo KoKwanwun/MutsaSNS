@@ -23,14 +23,13 @@ import static org.mockito.Mockito.when;
 class PostServiceTest {
 
     private PostService postService;
-    private CheckException checkException;
 
     private PostRepository postRepository = Mockito.mock(PostRepository.class);
     private UserRepository userRepository = Mockito.mock(UserRepository.class);
 
     @BeforeEach
     void setUp() {
-        postService = new PostService(checkException, postRepository);
+        postService = new PostService(userRepository, postRepository);
     }
 
     Long testUserId = 1L;
@@ -106,6 +105,7 @@ class PostServiceTest {
     @DisplayName("포스트 수정 실패 - 포스트 존재하지 않음")
     void updatePost_fail1() {
         when(postRepository.findById(testPostId)).thenReturn(Optional.empty());
+        when(userRepository.findByUserName(testAccessUserName)).thenReturn(Optional.of(accessUser));
         UserException userException = Assertions.assertThrows(UserException.class, () -> postService.update(testPostId, new PostRequest(testTitle, testBody), testAccessUserName));
 
         assertEquals(ErrorCode.POST_NOT_FOUND, userException.getErrorCode());
@@ -128,7 +128,7 @@ class PostServiceTest {
         when(userRepository.findByUserName(testAccessUserName)).thenReturn(Optional.empty());
         UserException userException = Assertions.assertThrows(UserException.class, () -> postService.update(testPostId, new PostRequest(testTitle, testBody), testAccessUserName));
 
-        assertEquals(ErrorCode.DATABASE_ERROR, userException.getErrorCode());
+        assertEquals(ErrorCode.USERNAME_NOT_FOUND, userException.getErrorCode());
     }
 
     // 포스트 삭제
@@ -145,6 +145,7 @@ class PostServiceTest {
     @DisplayName("포스트 삭제 실패 - 포스트 존재하지 않음")
     void deletePost_fail1() {
         when(postRepository.findById(testPostId)).thenReturn(Optional.empty());
+        when(userRepository.findByUserName(testAccessUserName)).thenReturn(Optional.of(accessUser));
         UserException userException = Assertions.assertThrows(UserException.class, () -> postService.delete(testPostId, testAccessUserName));
 
         assertEquals(ErrorCode.POST_NOT_FOUND, userException.getErrorCode());
@@ -167,6 +168,6 @@ class PostServiceTest {
         when(userRepository.findByUserName(testAccessUserName)).thenReturn(Optional.empty());
         UserException userException = Assertions.assertThrows(UserException.class, () -> postService.delete(testPostId, testAccessUserName));
 
-        assertEquals(ErrorCode.DATABASE_ERROR, userException.getErrorCode());
+        assertEquals(ErrorCode.USERNAME_NOT_FOUND, userException.getErrorCode());
     }
 }

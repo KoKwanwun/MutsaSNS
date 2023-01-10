@@ -1,8 +1,11 @@
 package com.likelion.finalproject.service;
 
+import com.likelion.finalproject.domain.dto.user.UserRole;
 import com.likelion.finalproject.domain.entity.*;
 import com.likelion.finalproject.domain.dto.post.PostDto;
 import com.likelion.finalproject.domain.dto.post.PostRequest;
+import com.likelion.finalproject.exception.ErrorCode;
+import com.likelion.finalproject.exception.UserException;
 import com.likelion.finalproject.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostService {
 
-    private final CheckException checkException;
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
     /**
@@ -26,7 +29,8 @@ public class PostService {
      */
     public PostDto create(PostRequest request, String userName) {
         // 작성자(유저)가 DB에 존재하지 않을 경우
-        checkException.checkUser(userName);
+        userRepository.findByUserName(userName)
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
         Post savedPost = postRepository.save(PostDto.toEntity(request.getTitle(), request.getBody(), userName));
 
@@ -36,7 +40,8 @@ public class PostService {
 
     public PostDto printOnePost(Long postId) {
         // 해당 id의 post가 없을 경우
-        Post post = checkException.checkPost(postId);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
 
         return new PostDto(post.getId(), post.getTitle(), post.getBody(),
                 post.getUserName(), post.getCreatedAt(), post.getLastModifiedAt());
@@ -52,7 +57,18 @@ public class PostService {
     }
 
     public PostDto update(Long id, PostRequest postRequest, String accessName) {
-        Post post = checkException.checkEnableChangePost(id, accessName);
+        // 작성자(유저)가 DB에 존재하지 않을 경우
+        User user = userRepository.findByUserName(accessName)
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+
+        // 해당 id의 post가 없을 경우
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        // 작성자 != 유저, 하지만 유저의 ROLE이 ADMIN이면 수정이나 삭제가 가능하도록
+        if(!post.getUserName().equals(accessName) && user.getRole().equals(UserRole.USER)) {
+            throw new UserException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
+        }
 
         post.setTitle(postRequest.getTitle());
         post.setBody(postRequest.getBody());
@@ -64,7 +80,18 @@ public class PostService {
     }
 
     public PostDto delete(Long id, String accessName) {
-        Post post = checkException.checkEnableChangePost(id, accessName);
+        // 작성자(유저)가 DB에 존재하지 않을 경우
+        User user = userRepository.findByUserName(accessName)
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
+
+        // 해당 id의 post가 없을 경우
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new UserException(ErrorCode.POST_NOT_FOUND, ErrorCode.POST_NOT_FOUND.getMessage()));
+
+        // 작성자 != 유저, 하지만 유저의 ROLE이 ADMIN이면 수정이나 삭제가 가능하도록
+        if(!post.getUserName().equals(accessName) && user.getRole().equals(UserRole.USER)) {
+            throw new UserException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage());
+        }
 
         postRepository.delete(post);
 
@@ -77,7 +104,8 @@ public class PostService {
      */
     public Page<PostDto> myFeed(Pageable pageable, String userName) {
         // 작성자(유저)가 DB에 존재하지 않을 경우
-        checkException.checkUser(userName);
+        userRepository.findByUserName(userName)
+                .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
         Page<Post> posts = postRepository.findByUserName(userName, pageable);
         Page<PostDto> postDtos = posts.map(post -> new PostDto(post.getId(),
