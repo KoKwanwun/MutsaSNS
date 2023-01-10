@@ -48,7 +48,9 @@ class PostRestControllerTest {
             .body("test body")
             .build();
 
-    // 포스트 상세
+    /**
+     * 포스트 상세 테스트
+     */
     @Test
     @DisplayName("포스트 상세 조회 성공")
     @WithMockUser
@@ -87,7 +89,9 @@ class PostRestControllerTest {
                 .andExpect(status().is(ErrorCode.POST_NOT_FOUND.getStatus().value()));
     }
 
-    // 포스트 등록
+    /**
+     * 포스트 등록 테스트
+     */
     @Test
     @DisplayName("포스트 작성 성공")
     @WithMockUser
@@ -154,7 +158,9 @@ class PostRestControllerTest {
                 .andExpect(status().is(ErrorCode.INVALID_PERMISSION.getStatus().value()));
     }
 
-    // 포스트 수정
+    /**
+     * 포스트 수정 테스트
+     */
     @Test
     @DisplayName("포스트 수정 성공")
     @WithMockUser
@@ -221,7 +227,9 @@ class PostRestControllerTest {
                 .andExpect(status().is(ErrorCode.DATABASE_ERROR.getStatus().value()));
     }
 
-    // 포스트 삭제
+    /**
+     * 포스트 삭제 테스트
+     */
     @Test
     @DisplayName("포스트 삭제 성공")
     @WithMockUser
@@ -288,7 +296,10 @@ class PostRestControllerTest {
                 .andExpect(status().is(ErrorCode.DATABASE_ERROR.getStatus().value()));
     }
 
-    // 포스트 리스트
+
+    /**
+     * 포스트 리스트 테스트
+     */
     @Test
     @DisplayName("포스트 리스트 성공")
     @WithMockUser
@@ -307,5 +318,39 @@ class PostRestControllerTest {
         assertEquals(1, pageable.getPageNumber());
         assertEquals(5, pageable.getPageSize());
         assertEquals(Sort.by("createdAt", "desc"), pageable.withSort(Sort.by("createdAt", "desc")).getSort());
+    }
+
+    /**
+     * 마이피드 테스트
+     */
+    @Test
+    @DisplayName("마이피드 조회 성공")
+    @WithMockUser
+    void myFeed_success() throws Exception {
+        mockMvc.perform(get("/api/v1/posts/my")
+                        .param("page", "1")
+                        .param("size", "5")
+                        .param("sort", "createdAt,desc"))
+                .andExpect(status().isOk());
+
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+
+        verify(postService).myFeed(pageableCaptor.capture(), any());
+        PageRequest pageable = (PageRequest) pageableCaptor.getValue();
+
+        assertEquals(1, pageable.getPageNumber());
+        assertEquals(5, pageable.getPageSize());
+        assertEquals(Sort.by("createdAt", "desc"), pageable.withSort(Sort.by("createdAt", "desc")).getSort());
+    }
+
+    @Test
+    @DisplayName("마이피드 조회 실패(1) - 로그인 하지 않은 경우")
+    void myFeed_fail() throws Exception {
+        when(postService.myFeed(any(), any())).thenThrow(new UserException(ErrorCode.INVALID_PERMISSION, ErrorCode.INVALID_PERMISSION.getMessage()));
+
+        mockMvc.perform(get("/api/v1/posts/my")
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(status().is(ErrorCode.INVALID_PERMISSION.getStatus().value()));
     }
 }
