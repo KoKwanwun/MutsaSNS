@@ -1,7 +1,6 @@
-package com.likelion.finalproject.controller;
+package com.likelion.finalproject.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.likelion.finalproject.controller.api.UserRestController;
 import com.likelion.finalproject.domain.dto.user.UserDto;
 import com.likelion.finalproject.domain.dto.user.UserJoinRequest;
 import com.likelion.finalproject.domain.dto.user.UserLoginRequest;
