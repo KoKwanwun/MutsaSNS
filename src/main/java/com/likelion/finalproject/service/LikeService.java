@@ -25,7 +25,7 @@ public class LikeService {
     /**
      * 좋아요
      */
-    public void clickLike(Long postId, String userName) {
+    public String clickLike(Long postId, String userName) {
         // 작성자(유저)가 DB에 존재하지 않을 경우
         User user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
@@ -53,6 +53,8 @@ public class LikeService {
                         .user(user)
                         .post(post)
                         .build());
+
+        return "좋아요를 눌렀습니다.";
     }
 
     public Long countLike(Long postId) {

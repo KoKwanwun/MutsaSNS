@@ -25,8 +25,8 @@ public class LikeRestController {
     @ApiOperation(value = "좋아요 누르기")
     @PostMapping("/{postId}/likes")
     public Response<String> clickLike(@PathVariable Long postId, @ApiIgnore Authentication authentication) {
-        likeService.clickLike(postId, authentication.getName());
-        return Response.success("좋아요를 눌렀습니다.");
+        String result = likeService.clickLike(postId, authentication.getName());
+        return Response.success(result);
     }
 
     @ApiOperation(value = "좋아요 개수")
