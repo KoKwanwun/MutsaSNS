@@ -18,20 +18,20 @@
 - IDE : IntelliJ
 
 ## 체크리스트
-- AWS EC2에 Docker 배포
-- Gitlab CI & Crontab CD
-- Swagger
-- 회원가입
-- 로그인
-- 포스트 작성, 수정, 삭제, 리스트
-- 화면 UI 개발 : 게시판 조회, 게시판 상세(구현중)
-- ADMIN 회원으로 등급업하는 기능
-- ADMIN 회원이 로그인 시 자신이 쓴 글이 아닌 글과 댓글에 수정, 삭제를 할 수 있는 기능
-- 댓글
-- 좋아요
-- 마이피드
-- 알림
-- Swagger에 ApiOperation을 써서 Controller 설명 보이도록 설정
+✅ AWS EC2에 Docker 배포<br>
+✅ Gitlab CI & Crontab CD<br>
+✅ Swagger<br>
+✅ 회원가입<br>
+✅ 로그인<br>
+✅ 포스트 작성, 수정, 삭제, 리스트<br>
+✅ 화면 UI 개발 : 게시판 조회, 게시판 상세(구현중)<br>
+✅ ADMIN 회원으로 등급업하는 기능<br>
+✅ ADMIN 회원이 로그인 시 자신이 쓴 글이 아닌 글과 댓글에 수정, 삭제를 할 수 있는 기능<br>
+✅ 댓글<br>
+✅ 좋아요<br>
+✅ 마이피드<br>
+✅ 알림<br>
+✅ Swagger에 ApiOperation을 써서 Controller 설명 보이도록 설정
 
 ## 특이사항
 - Swagger 적용
