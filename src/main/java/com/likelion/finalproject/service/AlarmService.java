@@ -23,7 +23,7 @@ public class AlarmService {
         userRepository.findByUserName(userName)
                 .orElseThrow(() -> new UserException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
-        Page<Alarm> alarms = alarmRepository.findAll(pageable);
+        Page<Alarm> alarms = alarmRepository.findAllByUser_UserName(userName, pageable);
         Page<AlarmDto> alarmDtos = alarms.map(alarm -> new AlarmDto(alarm.getId(),
                 alarm.getAlarmType(), alarm.getFromUserId(), alarm.getTargetId(),
                 alarm.getText(), alarm.getCreatedAt(), alarm.getLastModifiedAt()));
