@@ -206,8 +206,8 @@
             "paged": true,
             "unpaged": false
             },
-            "totalPages": 3,
-            "totalElements": 41,
+            "totalPages": 1,
+            "totalElements": 3,
             "last": false,
             "size": 20,
             "number": 0,
@@ -216,7 +216,7 @@
                 "sorted": true,
                 "unsorted": false
             },
-            "numberOfElements": 20,
+            "numberOfElements": 3,
             "first": true,
             "empty": false
         }
@@ -316,8 +316,8 @@
             "paged": true,
             "unpaged": false
             },
-            "totalPages": 3,
-            "totalElements": 41,
+            "totalPages": 1,
+            "totalElements": 1,
             "last": false,
             "size": 20,
             "number": 0,
@@ -326,7 +326,7 @@
                 "sorted": true,
                 "unsorted": false
             },
-            "numberOfElements": 20,
+            "numberOfElements": 1,
             "first": true,
             "empty": false
         }
@@ -357,21 +357,21 @@
                 },
             "offset": 0,
             "pageNumber": 0,
-            "pageSize": 20,
+            "pageSize": 10,
             "paged": true,
             "unpaged": false
             },
-            "totalPages": 3,
-            "totalElements": 41,
+            "totalPages": 1,
+            "totalElements": 1,
             "last": false,
-            "size": 20,
+            "size": 10,
             "number": 0,
             "sort": {
                 "empty": false,
                 "sorted": true,
                 "unsorted": false
             },
-            "numberOfElements": 20,
+            "numberOfElements": 1,
             "first": true,
             "empty": false
         }
@@ -490,8 +490,8 @@
             "paged": true,
             "unpaged": false
             },
-            "totalPages": 3,
-            "totalElements": 41,
+            "totalPages": 1,
+            "totalElements": 2,
             "last": false,
             "size": 20,
             "number": 0,
@@ -500,7 +500,7 @@
                 "sorted": true,
                 "unsorted": false
             },
-            "numberOfElements": 20,
+            "numberOfElements": 2,
             "first": true,
             "empty": false
         }
