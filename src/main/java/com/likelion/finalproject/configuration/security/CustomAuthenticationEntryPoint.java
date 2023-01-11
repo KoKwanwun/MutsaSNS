@@ -26,11 +26,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         }
 
         // 해당 예외가 없는데 에러가 난 경우
-        String exception = (String)request.getAttribute("exception");
-
-        if(exception == null){
-            setResponse(ErrorCode.INVALID_PERMISSION, response);
-        }
+        setResponse(ErrorCode.INVALID_PERMISSION, response);
     }
 
     private void setResponse(ErrorCode errorCode, HttpServletResponse res) throws IOException {

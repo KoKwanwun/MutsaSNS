@@ -33,13 +33,14 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/users/join", "/api/v1/users/login").permitAll() // join, login은 언제나 가능
-                .antMatchers(HttpMethod.POST, "/api/v1/**").authenticated() // 접근 요청 막기
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt사용하는 경우 씀
+                .antMatchers(HttpMethod.GET,"/api/v1/posts", "/api/v1/posts/{postId}", "/api/v1/posts/{postId}/comments", "/api/v1/posts/{postId}/likes").permitAll() // 조회는 회원, 비회원 모두 가능
+                .antMatchers("/api/v1/**").authenticated() // 접근 요청 막기
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt사용하는 경우 씀
                 .and()
                 .addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class) //UserNamePasswordAuthenticationFilter적용하기 전에 JWTTokenFilter를 적용 하라는 뜻 입니다.
                 .addFilterBefore(new JwtExceptionFilter(), JwtTokenFilter.class)
